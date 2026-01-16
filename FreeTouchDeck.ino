@@ -46,6 +46,10 @@
 
 //#define ESP32TouchDownS3
 
+// ------- Uncomment the next line if you use capacitive touch -------
+// (The Waveshare ESP32-S3-Toucn-LCD-x.xx uses this!)
+#define WAVESHARE_ESP32S3_TOUCH_LCD_43B
+
 // ------- If your board is capapble of USB HID you can uncomment this -
 
 //#define USEUSBHID
@@ -63,7 +67,7 @@
 
 // ------- NimBLE definition, use only if the NimBLE library is installed 
 // and if you are using the original ESP32-BLE-Keyboard library by T-VK -------
-//#define USE_NIMBLE
+#define USE_NIMBLE 1
 
 // Define the filesystem to be used. For now just SPIFFS.
 #define FILESYSTEM SPIFFS
@@ -85,12 +89,18 @@ const char *versionnumber = "0.9.18a";
    * Fix #90
   */
 
+#ifndef TFT_ESPI_VERSION
+  #define TFT_ESPI_VERSION "LovyanGFX"
+#endif
+
 #include <pgmspace.h> // PROGMEM support header
 #include <FS.h>       // Filesystem support header
   
 #include <Preferences.h> // Used to store states before sleep/reboot
 
-#include <TFT_eSPI.h> // The TFT_eSPI library
+#ifndef WAVESHARE_ESP32S3_TOUCH_LCD_43B
+  #include <TFT_eSPI.h> // The TFT_eSPI library
+#endif
 
 #if defined(USEUSBHID)
 
@@ -120,15 +130,18 @@ const char *versionnumber = "0.9.18a";
 
 #else
 
-  #include "BLEDevice.h"   // Additional BLE functionaity
-  #include "BLEUtils.h"    // Additional BLE functionaity
-  #include "BLEBeacon.h"   // Additional BLE functionaity
+  #include <BLEDevice.h>
+  #include <BLEServer.h>
+  #include <BLEUtils.h>
+  #include <BLEHIDDevice.h>
+  #include <BLE2902.h>
 
 #endif // defined(USE_NIMBLE)
 
 #include "esp_sleep.h"   // Additional BLE functionaity
-#include "esp_bt_main.h"   // Additional BLE functionaity
-#include "esp_bt_device.h" // Additional BLE functionaity
+// NOTE: Legacy esp_bt_* headers/APIs were removed/changed in Arduino-ESP32 core 3.x
+// and Classic Bluetooth is not supported on ESP32-S3. BLE HID works via NimBLE.
+// esp_bt_device.h is a legacy Bluedroid header; not available/needed on ESP32 Arduino core 3.x
 
 #include <ArduinoJson.h> // Using ArduinoJson to read and write config files
 
@@ -139,15 +152,31 @@ const char *versionnumber = "0.9.18a";
 
 #include <ESPmDNS.h> // DNS functionality
 
-#ifdef USECAPTOUCH
+// ---- Board selection ----
+// Define this in your build flags to target the Waveshare RGB 4.3" board:
+//   -D WAVESHARE_ESP32S3_TOUCH_LCD_43B
+//
+// This keeps the original TFT_eSPI + optional FT6236 path for other boards.
+
+#ifdef WAVESHARE_ESP32S3_TOUCH_LCD_43B
   #include <Wire.h>
-  #include <FT6236.h>
-  FT6236 ts = FT6236();
-#endif // defined(USECAPTOUCH)
+  #define USECAPTOUCH
+  #include "boards/waveshare_esp32s3_touch_lcd_43b.h"
+  #include <chip/esp_expander_ch422g.hpp>  // if not already pulled by the header
+  esp_expander::CH422G ioexp(0, WS43B_CH422G_ADDR);
+#else
+  #ifdef USECAPTOUCH
+    #include <Wire.h>
+    #include <FT6236.h>
+    FT6236 ts = FT6236();
+  #endif // defined(USECAPTOUCH)
+#endif
 
 AsyncWebServer webserver(80);
 
+#ifndef WAVESHARE_ESP32S3_TOUCH_LCD_43B
 TFT_eSPI tft = TFT_eSPI();
+#endif
 
 Preferences savedStates;
 
@@ -162,8 +191,13 @@ Preferences savedStates;
 #define REPEAT_CAL false
 
 // Set the width and height of your screen here:
-#define SCREEN_WIDTH 480
-#define SCREEN_HEIGHT 320
+#ifdef WAVESHARE_ESP32S3_TOUCH_LCD_43B
+  #define SCREEN_WIDTH 800
+  #define SCREEN_HEIGHT 480
+#else
+  #define SCREEN_WIDTH 480
+  #define SCREEN_HEIGHT 320
+#endif
 
 // Keypad start position, centre of the first button
 #define KEY_X SCREEN_WIDTH / 6
@@ -307,8 +341,14 @@ unsigned long Interval = 0;
 bool displayinginfo;
 char* jsonfilefail = "";
 
-// Invoke the TFT_eSPI button class and create all the button objects
-TFT_eSPI_Button key[6];
+// Button helper (TFT_eSPI provides TFT_eSPI_Button; Waveshare build uses a minimal compat class)
+#ifdef WAVESHARE_ESP32S3_TOUCH_LCD_43B
+  #include "TFT_Button_Compat.h"
+  TFT_Button_Compat<LGFX_WS43B> key[6];
+#else
+  // Invoke the TFT_eSPI button class and create all the button objects
+  TFT_eSPI_Button key[6];
+#endif
 
 //--------- Internal references ------------
 // (this needs to be below all structs etc..)
@@ -319,6 +359,7 @@ TFT_eSPI_Button key[6];
 #include "UserActions.h"
 #include "Action.h"
 #include "Webserver.h"
+#include "TouchCompat.h"
 #ifndef ESP32TouchDownS3
   #include "Touch.h"
 #endif // ESP32TouchDownS3
@@ -347,7 +388,7 @@ void setup()
   }
   Serial.println("");
 
-#ifdef USECAPTOUCH
+#if defined(USECAPTOUCH) && !defined(WAVESHARE_ESP32S3_TOUCH_LCD_43B)
   #ifdef CUSTOM_TOUCH_SDA
     if (!ts.begin(40, CUSTOM_TOUCH_SDA, CUSTOM_TOUCH_SCL))
   #else
@@ -360,18 +401,28 @@ void setup()
   {
     Serial.println("[INFO]: Capacitive touch started!");
   }
-#endif // defined(USECAPTOUCH)
+#endif // USECAPTOUCH && !WAVESHARE_ESP32S3_TOUCH_LCD_43B
 
-  // Setup PWM channel and attach pin bl_pin
-  ledcSetup(0, 5000, 8);
-#ifdef TFT_BL
-  ledcAttachPin(TFT_BL, 0);
+  // Setup backlight / display
+#ifdef WAVESHARE_ESP32S3_TOUCH_LCD_43B
+  // Waveshare 4.3B: backlight is controlled through CH422G EXIO2 and touch reset EXIO1.
+  // Display init + backlight enable + touch init happen here.
+  bool touch_ok = waveshare43b_begin();
+  Serial.print("[INFO]: GT911 touch init: ");
+  Serial.println(touch_ok ? "OK" : "FAILED");
+
+  // This project assumes rotation=1 in many places; keep it for now.
+  // If you want landscape swap, adjust button/key coordinate logic too.
+  tft.setRotation(1);
 #else
-  ledcAttachPin(backlightPin, 0);
-#endif // defined(TFT_BL)
+  // Other boards: Setup PWM channel and attach backlight pin.
+  ledcSetup(0, 5000, 8);
+  #ifdef TFT_BL
+    ledcAttachPin(TFT_BL, 0);
+  #else
+    ledcAttachPin(backlightPin, 0);
+  #endif // defined(TFT_BL)
   ledcWrite(0, ledBrightness); // Start @ initial Brightness
-
-  // --------------- Init Display -------------------------
 
   // Initialise the TFT screen
   tft.init();
@@ -381,6 +432,7 @@ void setup()
 
   // Clear the screen
   tft.fillScreen(TFT_BLACK);
+#endif
 
   esp_sleep_wakeup_cause_t wakeup_reason;
   wakeup_reason = esp_sleep_get_wakeup_cause();
@@ -605,8 +657,12 @@ if(generalconfig.beep){
 
   Serial.print("[INFO]: ArduinoJson version: ");
   Serial.println(ARDUINOJSON_VERSION);
-  Serial.print("[INFO]: TFT_eSPI version: ");
-  Serial.println(TFT_ESPI_VERSION);
+  #ifdef TFT_ESPI_VERSION
+    Serial.print("[INFO]: TFT_eSPI version: ");
+    Serial.println(TFT_ESPI_VERSION);
+  #else
+    Serial.println("[INFO]: Display backend: LovyanGFX (RGB panel)");
+  #endif
 
   // ---------------- Start the first keypad -------------
 
@@ -742,26 +798,7 @@ void loop(void)
 
     // If pageNum = 7, we are in STA or AP mode.
     // We no check if the button is pressed, and if so restart.
-#ifdef USECAPTOUCH
-    if (ts.touched())
-    {
-
-      // Retrieve a point
-      TS_Point p = ts.getPoint();
-
-      //Flip things around so it matches our screen rotation
-      p.x = map(p.x, 0, 320, 320, 0);
-      t_y = p.x;
-      t_x = p.y;
-
-      pressed = true;
-    }
-
-#else
-
-    pressed = tft.getTouch(&t_x, &t_y);
-
-#endif // defined(USECAPTOUCH)
+    pressed = read_touch(t_x, t_y);
 
     if (pressed)
     {     
@@ -791,26 +828,7 @@ void loop(void)
     //At the beginning of a new loop, make sure we do not use last loop's touch.
     boolean pressed = false;
 
-#ifdef USECAPTOUCH
-    if (ts.touched())
-    {
-
-      // Retrieve a point
-      TS_Point p = ts.getPoint();
-
-      //Flip things around so it matches our screen rotation
-      p.x = map(p.x, 0, 320, 320, 0);
-      t_y = p.x;
-      t_x = p.y;
-
-      pressed = true;
-    }
-
-#else
-
-    pressed = tft.getTouch(&t_x, &t_y);
-
-#endif // defined(USECAPTOUCH)
+    pressed = read_touch(t_x, t_y);
 
     if (pressed)
     {     
@@ -829,26 +847,7 @@ void loop(void)
     //At the beginning of a new loop, make sure we do not use last loop's touch.
     boolean pressed = false;
 
-#ifdef USECAPTOUCH
-    if (ts.touched())
-    {
-
-      // Retrieve a point
-      TS_Point p = ts.getPoint();
-
-      //Flip things around so it matches our screen rotation
-      p.x = map(p.x, 0, 320, 320, 0);
-      t_y = p.x;
-      t_x = p.y;
-
-      pressed = true;
-    }
-
-#else
-
-    pressed = tft.getTouch(&t_x, &t_y);
-
-#endif // defined(USECAPTOUCH)
+    pressed = read_touch(t_x, t_y);
 
     if (pressed)
     {     
@@ -868,26 +867,7 @@ void loop(void)
     //At the beginning of a new loop, make sure we do not use last loop's touch.
     boolean pressed = false;
 
-#ifdef USECAPTOUCH
-    if (ts.touched())
-    {
-
-      // Retrieve a point
-      TS_Point p = ts.getPoint();
-
-      //Flip things around so it matches our screen rotation
-      p.x = map(p.x, 0, 320, 320, 0);
-      t_y = p.x;
-      t_x = p.y;
-
-      pressed = true;
-    }
-
-#else
-
-    pressed = tft.getTouch(&t_x, &t_y);
-
-#endif // defined(USECAPTOUCH)
+    pressed = read_touch(t_x, t_y);
 
     if (pressed)
     {     
@@ -956,26 +936,7 @@ void loop(void)
     //At the beginning of a new loop, make sure we do not use last loop's touch.
     boolean pressed = false;
 
-#ifdef USECAPTOUCH
-    if (ts.touched())
-    {
-
-      // Retrieve a point
-      TS_Point p = ts.getPoint();
-
-      //Flip things around so it matches our screen rotation
-      p.x = map(p.x, 0, 320, 320, 0);
-      t_y = p.x;
-      t_x = p.y;
-
-      pressed = true;
-    }
-
-#else
-
-    pressed = tft.getTouch(&t_x, &t_y);
-
-#endif // defined(USECAPTOUCH)
+    pressed = read_touch(t_x, t_y);
 
     // Check if the X and Y coordinates of the touch are within one of our buttons
     for (uint8_t b = 0; b < 6; b++)

@@ -1509,22 +1509,24 @@ void drawErrorMessage(String message)
 void printDeviceAddress()
 {
 
-  const uint8_t *point = esp_bt_dev_get_address();
+  // Arduino-ESP32 core 3.x (IDF 5+) and ESP32-S3 do not provide legacy
+  // esp_bt_dev_get_address(). Use the base MAC from eFuse instead.
+  uint64_t mac = ESP.getEfuseMac();
+  uint8_t b[6];
+  b[0] = (mac >> 40) & 0xFF;
+  b[1] = (mac >> 32) & 0xFF;
+  b[2] = (mac >> 24) & 0xFF;
+  b[3] = (mac >> 16) & 0xFF;
+  b[4] = (mac >> 8) & 0xFF;
+  b[5] = (mac >> 0) & 0xFF;
 
   for (int i = 0; i < 6; i++)
   {
-
     char str[3];
-
-    sprintf(str, "%02X", (int)point[i]);
-    //Serial.print(str);
+    sprintf(str, "%02X", (int)b[i]);
     tft.print(str);
-
     if (i < 5)
-    {
-     // Serial.print(":");
       tft.print(":");
-    }
   }
 }
 

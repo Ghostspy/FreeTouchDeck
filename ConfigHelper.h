@@ -26,11 +26,10 @@ bool startWifiStation(bool stopble, bool startwebserver){
       // Delete the task bleKeyboard had create to free memory and to not interfere with AsyncWebServer
         bleKeyboard.end();
       
-        // Stop BLE from interfering with our WIFI signal
+        // Stop BLE from interfering with our WIFI signal.
+        // NOTE: Legacy esp_bt_controller_* APIs are not available on Arduino-ESP32 core 3.x
+        // (IDF 5+) and Classic Bluetooth is not supported on ESP32-S3.
         btStop();
-        esp_bt_controller_disable();
-        esp_bt_controller_deinit();
-        esp_bt_controller_mem_release(ESP_BT_MODE_BTDM);
 
         Serial.println("");
         Serial.println("[INFO]: BLE Stopped");
@@ -66,9 +65,6 @@ void startWifiAP(){
 
   // Stop BLE from interfering with our WIFI signal
   btStop();
-  esp_bt_controller_disable();
-  esp_bt_controller_deinit();
-  esp_bt_controller_mem_release(ESP_BT_MODE_BTDM);
 
   Serial.println("");
   Serial.println("[INFO]: BLE Stopped");
@@ -101,9 +97,6 @@ void startDefaultAP(){
 
   // Stop BLE from interfering with our WIFI signal
   btStop();
-  esp_bt_controller_disable();
-  esp_bt_controller_deinit();
-  esp_bt_controller_mem_release(ESP_BT_MODE_BTDM);
 
   Serial.println("[INFO]: BLE Stopped");
 

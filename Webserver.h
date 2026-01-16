@@ -440,7 +440,7 @@ void handlerSetup()
   webserver.on("/saveconfig", HTTP_POST, [](AsyncWebServerRequest *request) {
     if (request->hasParam("save", true))
     {
-      AsyncWebParameter *p = request->getParam("save", true);
+      const AsyncWebParameter *p = request->getParam("save", true);
       String savemode = p->value().c_str();
 
       if (savemode == "general")
@@ -461,16 +461,16 @@ void handlerSetup()
 
         JsonObject general = doc.to<JsonObject>();
 
-        AsyncWebParameter *menubuttoncolor = request->getParam("menubuttoncolor", true);
+        const AsyncWebParameter *menubuttoncolor = request->getParam("menubuttoncolor", true);
         general["menubuttoncolor"] = menubuttoncolor->value().c_str();
-        AsyncWebParameter *functionbuttoncolor = request->getParam("functionbuttoncolor", true);
+        const AsyncWebParameter *functionbuttoncolor = request->getParam("functionbuttoncolor", true);
         general["functionbuttoncolor"] = functionbuttoncolor->value().c_str();
-        AsyncWebParameter *latchcolor = request->getParam("latchcolor", true);
+        const AsyncWebParameter *latchcolor = request->getParam("latchcolor", true);
         general["latchcolor"] = latchcolor->value().c_str();
-        AsyncWebParameter *background = request->getParam("background", true);
+        const AsyncWebParameter *background = request->getParam("background", true);
         general["background"] = background->value().c_str();
 
-        AsyncWebParameter *sleepenable = request->getParam("sleepenable", true);
+        const AsyncWebParameter *sleepenable = request->getParam("sleepenable", true);
         String sleepEnable = sleepenable->value().c_str();
 
         if (sleepEnable == "true")
@@ -482,7 +482,7 @@ void handlerSetup()
           general["sleepenable"] = false;
         }
 
-        AsyncWebParameter *beep = request->getParam("beep", true);
+        const AsyncWebParameter *beep = request->getParam("beep", true);
         String Beep = beep->value().c_str();
 
         if (Beep == "true")
@@ -495,26 +495,26 @@ void handlerSetup()
         }
 
         // Sleep timer
-        AsyncWebParameter *sleeptimer = request->getParam("sleeptimer", true);
+        const AsyncWebParameter *sleeptimer = request->getParam("sleeptimer", true);
 
         String sleepTimer = sleeptimer->value().c_str();
         general["sleeptimer"] = sleepTimer.toInt();
 
         //Modifiers
 
-        AsyncWebParameter *modifier1 = request->getParam("modifier1", true);
+        const AsyncWebParameter *modifier1 = request->getParam("modifier1", true);
         String Modifier1 = modifier1->value().c_str();    
         general["modifier1"] = Modifier1.toInt();
 
-        AsyncWebParameter *modifier2 = request->getParam("modifier2", true);
+        const AsyncWebParameter *modifier2 = request->getParam("modifier2", true);
         String Modifier2 = modifier2->value().c_str();
         general["modifier2"] = Modifier2.toInt();
 
-        AsyncWebParameter *modifier3 = request->getParam("modifier3", true);
+        const AsyncWebParameter *modifier3 = request->getParam("modifier3", true);
         String Modifier3 = modifier3->value().c_str();
         general["modifier3"] = Modifier3.toInt();
 
-        AsyncWebParameter *helperdelay = request->getParam("helperdelay", true);
+        const AsyncWebParameter *helperdelay = request->getParam("helperdelay", true);
         String Helperdelay = helperdelay->value().c_str();
         general["helperdelay"] = Helperdelay.toInt();
 
@@ -542,20 +542,20 @@ void handlerSetup()
 
         JsonObject wifi = doc.to<JsonObject>();
 
-        AsyncWebParameter *menubuttoncolor = request->getParam("ssid", true);
+        const AsyncWebParameter *menubuttoncolor = request->getParam("ssid", true);
         wifi["ssid"] = menubuttoncolor->value().c_str();
-        AsyncWebParameter *functionbuttoncolor = request->getParam("password", true);
+        const AsyncWebParameter *functionbuttoncolor = request->getParam("password", true);
         wifi["password"] = functionbuttoncolor->value().c_str();
-        AsyncWebParameter *latchcolor = request->getParam("wifimode", true);
+        const AsyncWebParameter *latchcolor = request->getParam("wifimode", true);
         wifi["wifimode"] = latchcolor->value().c_str();
-        AsyncWebParameter *background = request->getParam("wifihostname", true);
+        const AsyncWebParameter *background = request->getParam("wifihostname", true);
         wifi["wifihostname"] = background->value().c_str();
 
-        AsyncWebParameter *attempts = request->getParam("attempts", true);
+        const AsyncWebParameter *attempts = request->getParam("attempts", true);
         String Attempts = attempts->value().c_str();
         wifi["attempts"] = Attempts.toInt();
 
-        AsyncWebParameter *attemptdelay = request->getParam("attemptdelay", true);
+        const AsyncWebParameter *attemptdelay = request->getParam("attemptdelay", true);
         String Attemptdelay = attemptdelay->value().c_str();
         wifi["attemptdelay"] = Attemptdelay.toInt();
 
@@ -585,17 +585,17 @@ void handlerSetup()
 
         JsonObject homescreen = doc.to<JsonObject>();
 
-        AsyncWebParameter *homescreenlogo0 = request->getParam("homescreenlogo0", true);
+        const AsyncWebParameter *homescreenlogo0 = request->getParam("homescreenlogo0", true);
         homescreen["logo0"] = homescreenlogo0->value().c_str();
-        AsyncWebParameter *homescreenlogo1 = request->getParam("homescreenlogo1", true);
+        const AsyncWebParameter *homescreenlogo1 = request->getParam("homescreenlogo1", true);
         homescreen["logo1"] = homescreenlogo1->value().c_str();
-        AsyncWebParameter *homescreenlogo2 = request->getParam("homescreenlogo2", true);
+        const AsyncWebParameter *homescreenlogo2 = request->getParam("homescreenlogo2", true);
         homescreen["logo2"] = homescreenlogo2->value().c_str();
-        AsyncWebParameter *homescreenlogo3 = request->getParam("homescreenlogo3", true);
+        const AsyncWebParameter *homescreenlogo3 = request->getParam("homescreenlogo3", true);
         homescreen["logo3"] = homescreenlogo3->value().c_str();
-        AsyncWebParameter *homescreenlogo4 = request->getParam("homescreenlogo4", true);
+        const AsyncWebParameter *homescreenlogo4 = request->getParam("homescreenlogo4", true);
         homescreen["logo4"] = homescreenlogo4->value().c_str();
-        AsyncWebParameter *homescreenlogo5 = request->getParam("homescreenlogo5", true);
+        const AsyncWebParameter *homescreenlogo5 = request->getParam("homescreenlogo5", true);
         homescreen["logo5"] = homescreenlogo5->value().c_str();
 
         if (serializeJsonPretty(doc, file) == 0)
@@ -622,15 +622,15 @@ void handlerSetup()
 
         JsonObject menu = doc.to<JsonObject>();
 
-        AsyncWebParameter *screen1logo0 = request->getParam("screen1logo0", true);
+        const AsyncWebParameter *screen1logo0 = request->getParam("screen1logo0", true);
         menu["logo0"] = screen1logo0->value().c_str();
-        AsyncWebParameter *screen1logo1 = request->getParam("screen1logo1", true);
+        const AsyncWebParameter *screen1logo1 = request->getParam("screen1logo1", true);
         menu["logo1"] = screen1logo1->value().c_str();
-        AsyncWebParameter *screen1logo2 = request->getParam("screen1logo2", true);
+        const AsyncWebParameter *screen1logo2 = request->getParam("screen1logo2", true);
         menu["logo2"] = screen1logo2->value().c_str();
-        AsyncWebParameter *screen1logo3 = request->getParam("screen1logo3", true);
+        const AsyncWebParameter *screen1logo3 = request->getParam("screen1logo3", true);
         menu["logo3"] = screen1logo3->value().c_str();
-        AsyncWebParameter *screen1logo4 = request->getParam("screen1logo4", true);
+        const AsyncWebParameter *screen1logo4 = request->getParam("screen1logo4", true);
         menu["logo4"] = screen1logo4->value().c_str();
 
         JsonObject button0 = doc.createNestedObject("button0");
@@ -644,7 +644,7 @@ void handlerSetup()
           button0["latch"] = false;
         }
 
-        AsyncWebParameter *screen1latchlogo0 = request->getParam("screen1latchlogo0", true);
+        const AsyncWebParameter *screen1latchlogo0 = request->getParam("screen1latchlogo0", true);
         Serial.println(screen1latchlogo0->value().c_str());
         if (strcmp(screen1latchlogo0->value().c_str(), "---") == 0)
         {
@@ -656,19 +656,19 @@ void handlerSetup()
         }
 
         JsonArray button0_actionarray = button0.createNestedArray("actionarray");
-        AsyncWebParameter *screen1button0action0 = request->getParam("screen1button0action0", true);
+        const AsyncWebParameter *screen1button0action0 = request->getParam("screen1button0action0", true);
         button0_actionarray.add(screen1button0action0->value().c_str());
-        AsyncWebParameter *screen1button0action1 = request->getParam("screen1button0action1", true);
+        const AsyncWebParameter *screen1button0action1 = request->getParam("screen1button0action1", true);
         button0_actionarray.add(screen1button0action1->value().c_str());
-        AsyncWebParameter *screen1button0action2 = request->getParam("screen1button0action2", true);
+        const AsyncWebParameter *screen1button0action2 = request->getParam("screen1button0action2", true);
         button0_actionarray.add(screen1button0action2->value().c_str());
 
         JsonArray button0_valuearray = button0.createNestedArray("valuearray");
-        AsyncWebParameter *screen1button0value0 = request->getParam("screen1button0value0", true);
+        const AsyncWebParameter *screen1button0value0 = request->getParam("screen1button0value0", true);
         button0_valuearray.add(screen1button0value0->value().c_str());
-        AsyncWebParameter *screen1button0value1 = request->getParam("screen1button0value1", true);
+        const AsyncWebParameter *screen1button0value1 = request->getParam("screen1button0value1", true);
         button0_valuearray.add(screen1button0value1->value().c_str());
-        AsyncWebParameter *screen1button0value2 = request->getParam("screen1button0value2", true);
+        const AsyncWebParameter *screen1button0value2 = request->getParam("screen1button0value2", true);
         button0_valuearray.add(screen1button0value2->value().c_str());
 
         JsonObject button1 = doc.createNestedObject("button1");
@@ -682,7 +682,7 @@ void handlerSetup()
           button1["latch"] = false;
         }
 
-        AsyncWebParameter *screen1latchlogo1 = request->getParam("screen1latchlogo1", true);
+        const AsyncWebParameter *screen1latchlogo1 = request->getParam("screen1latchlogo1", true);
         Serial.println(screen1latchlogo1->value().c_str());
         if (strcmp(screen1latchlogo1->value().c_str(), "---") == 0)
         {
@@ -696,19 +696,19 @@ void handlerSetup()
         }
 
         JsonArray button1_actionarray = button1.createNestedArray("actionarray");
-        AsyncWebParameter *screen1button1action0 = request->getParam("screen1button1action0", true);
+        const AsyncWebParameter *screen1button1action0 = request->getParam("screen1button1action0", true);
         button1_actionarray.add(screen1button1action0->value().c_str());
-        AsyncWebParameter *screen1button1action1 = request->getParam("screen1button1action1", true);
+        const AsyncWebParameter *screen1button1action1 = request->getParam("screen1button1action1", true);
         button1_actionarray.add(screen1button1action1->value().c_str());
-        AsyncWebParameter *screen1button1action2 = request->getParam("screen1button1action2", true);
+        const AsyncWebParameter *screen1button1action2 = request->getParam("screen1button1action2", true);
         button1_actionarray.add(screen1button1action2->value().c_str());
 
         JsonArray button1_valuearray = button1.createNestedArray("valuearray");
-        AsyncWebParameter *screen1button1value0 = request->getParam("screen1button1value0", true);
+        const AsyncWebParameter *screen1button1value0 = request->getParam("screen1button1value0", true);
         button1_valuearray.add(screen1button1value0->value().c_str());
-        AsyncWebParameter *screen1button1value1 = request->getParam("screen1button1value1", true);
+        const AsyncWebParameter *screen1button1value1 = request->getParam("screen1button1value1", true);
         button1_valuearray.add(screen1button1value1->value().c_str());
-        AsyncWebParameter *screen1button1value2 = request->getParam("screen1button1value2", true);
+        const AsyncWebParameter *screen1button1value2 = request->getParam("screen1button1value2", true);
         button1_valuearray.add(screen1button1value2->value().c_str());
 
         JsonObject button2 = doc.createNestedObject("button2");
@@ -722,7 +722,7 @@ void handlerSetup()
           button2["latch"] = false;
         }
 
-        AsyncWebParameter *screen1latchlogo2 = request->getParam("screen1latchlogo2", true);
+        const AsyncWebParameter *screen1latchlogo2 = request->getParam("screen1latchlogo2", true);
         Serial.println(screen1latchlogo2->value().c_str());
         if (strcmp(screen1latchlogo2->value().c_str(), "---") == 0)
         {
@@ -734,19 +734,19 @@ void handlerSetup()
         }
 
         JsonArray button2_actionarray = button2.createNestedArray("actionarray");
-        AsyncWebParameter *screen1button2action0 = request->getParam("screen1button2action0", true);
+        const AsyncWebParameter *screen1button2action0 = request->getParam("screen1button2action0", true);
         button2_actionarray.add(screen1button2action0->value().c_str());
-        AsyncWebParameter *screen1button2action1 = request->getParam("screen1button2action1", true);
+        const AsyncWebParameter *screen1button2action1 = request->getParam("screen1button2action1", true);
         button2_actionarray.add(screen1button2action1->value().c_str());
-        AsyncWebParameter *screen1button2action2 = request->getParam("screen1button2action2", true);
+        const AsyncWebParameter *screen1button2action2 = request->getParam("screen1button2action2", true);
         button2_actionarray.add(screen1button2action2->value().c_str());
 
         JsonArray button2_valuearray = button2.createNestedArray("valuearray");
-        AsyncWebParameter *screen1button2value0 = request->getParam("screen1button2value0", true);
+        const AsyncWebParameter *screen1button2value0 = request->getParam("screen1button2value0", true);
         button2_valuearray.add(screen1button2value0->value().c_str());
-        AsyncWebParameter *screen1button2value1 = request->getParam("screen1button2value1", true);
+        const AsyncWebParameter *screen1button2value1 = request->getParam("screen1button2value1", true);
         button2_valuearray.add(screen1button2value1->value().c_str());
-        AsyncWebParameter *screen1button2value2 = request->getParam("screen1button2value2", true);
+        const AsyncWebParameter *screen1button2value2 = request->getParam("screen1button2value2", true);
         button2_valuearray.add(screen1button2value2->value().c_str());
 
         JsonObject button3 = doc.createNestedObject("button3");
@@ -760,7 +760,7 @@ void handlerSetup()
           button3["latch"] = false;
         }
 
-        AsyncWebParameter *screen1latchlogo3 = request->getParam("screen1latchlogo3", true);
+        const AsyncWebParameter *screen1latchlogo3 = request->getParam("screen1latchlogo3", true);
         Serial.println(screen1latchlogo3->value().c_str());
         if (strcmp(screen1latchlogo3->value().c_str(), "---") == 0)
         {
@@ -772,19 +772,19 @@ void handlerSetup()
         }
 
         JsonArray button3_actionarray = button3.createNestedArray("actionarray");
-        AsyncWebParameter *screen1button3action0 = request->getParam("screen1button3action0", true);
+        const AsyncWebParameter *screen1button3action0 = request->getParam("screen1button3action0", true);
         button3_actionarray.add(screen1button3action0->value().c_str());
-        AsyncWebParameter *screen1button3action1 = request->getParam("screen1button3action1", true);
+        const AsyncWebParameter *screen1button3action1 = request->getParam("screen1button3action1", true);
         button3_actionarray.add(screen1button3action1->value().c_str());
-        AsyncWebParameter *screen1button3action2 = request->getParam("screen1button3action2", true);
+        const AsyncWebParameter *screen1button3action2 = request->getParam("screen1button3action2", true);
         button3_actionarray.add(screen1button3action2->value().c_str());
 
         JsonArray button3_valuearray = button3.createNestedArray("valuearray");
-        AsyncWebParameter *screen1button3value0 = request->getParam("screen1button3value0", true);
+        const AsyncWebParameter *screen1button3value0 = request->getParam("screen1button3value0", true);
         button3_valuearray.add(screen1button3value0->value().c_str());
-        AsyncWebParameter *screen1button3value1 = request->getParam("screen1button3value1", true);
+        const AsyncWebParameter *screen1button3value1 = request->getParam("screen1button3value1", true);
         button3_valuearray.add(screen1button3value1->value().c_str());
-        AsyncWebParameter *screen1button3value2 = request->getParam("screen1button3value2", true);
+        const AsyncWebParameter *screen1button3value2 = request->getParam("screen1button3value2", true);
         button3_valuearray.add(screen1button3value2->value().c_str());
 
         JsonObject button4 = doc.createNestedObject("button4");
@@ -798,7 +798,7 @@ void handlerSetup()
           button4["latch"] = false;
         }
 
-        AsyncWebParameter *screen1latchlogo4 = request->getParam("screen1latchlogo4", true);
+        const AsyncWebParameter *screen1latchlogo4 = request->getParam("screen1latchlogo4", true);
         Serial.println(screen1latchlogo4->value().c_str());
         if (strcmp(screen1latchlogo4->value().c_str(), "---") == 0)
         {
@@ -810,19 +810,19 @@ void handlerSetup()
         }
 
         JsonArray button4_actionarray = button4.createNestedArray("actionarray");
-        AsyncWebParameter *screen1button4action0 = request->getParam("screen1button4action0", true);
+        const AsyncWebParameter *screen1button4action0 = request->getParam("screen1button4action0", true);
         button4_actionarray.add(screen1button4action0->value().c_str());
-        AsyncWebParameter *screen1button4action1 = request->getParam("screen1button4action1", true);
+        const AsyncWebParameter *screen1button4action1 = request->getParam("screen1button4action1", true);
         button4_actionarray.add(screen1button4action1->value().c_str());
-        AsyncWebParameter *screen1button4action2 = request->getParam("screen1button4action2", true);
+        const AsyncWebParameter *screen1button4action2 = request->getParam("screen1button4action2", true);
         button4_actionarray.add(screen1button4action2->value().c_str());
 
         JsonArray button4_valuearray = button4.createNestedArray("valuearray");
-        AsyncWebParameter *screen1button4value0 = request->getParam("screen1button4value0", true);
+        const AsyncWebParameter *screen1button4value0 = request->getParam("screen1button4value0", true);
         button4_valuearray.add(screen1button4value0->value().c_str());
-        AsyncWebParameter *screen1button4value1 = request->getParam("screen1button4value1", true);
+        const AsyncWebParameter *screen1button4value1 = request->getParam("screen1button4value1", true);
         button4_valuearray.add(screen1button4value1->value().c_str());
-        AsyncWebParameter *screen1button4value2 = request->getParam("screen1button4value2", true);
+        const AsyncWebParameter *screen1button4value2 = request->getParam("screen1button4value2", true);
         button4_valuearray.add(screen1button4value2->value().c_str());
 
         if (serializeJsonPretty(doc, file) == 0)
@@ -849,15 +849,15 @@ void handlerSetup()
 
         JsonObject menu = doc.to<JsonObject>();
 
-        AsyncWebParameter *screen2logo0 = request->getParam("screen2logo0", true);
+        const AsyncWebParameter *screen2logo0 = request->getParam("screen2logo0", true);
         menu["logo0"] = screen2logo0->value().c_str();
-        AsyncWebParameter *screen2logo1 = request->getParam("screen2logo1", true);
+        const AsyncWebParameter *screen2logo1 = request->getParam("screen2logo1", true);
         menu["logo1"] = screen2logo1->value().c_str();
-        AsyncWebParameter *screen2logo2 = request->getParam("screen2logo2", true);
+        const AsyncWebParameter *screen2logo2 = request->getParam("screen2logo2", true);
         menu["logo2"] = screen2logo2->value().c_str();
-        AsyncWebParameter *screen2logo3 = request->getParam("screen2logo3", true);
+        const AsyncWebParameter *screen2logo3 = request->getParam("screen2logo3", true);
         menu["logo3"] = screen2logo3->value().c_str();
-        AsyncWebParameter *screen2logo4 = request->getParam("screen2logo4", true);
+        const AsyncWebParameter *screen2logo4 = request->getParam("screen2logo4", true);
         menu["logo4"] = screen2logo4->value().c_str();
 
         JsonObject button0 = doc.createNestedObject("button0");
@@ -871,7 +871,7 @@ void handlerSetup()
           button0["latch"] = false;
         }
 
-        AsyncWebParameter *screen2latchlogo0 = request->getParam("screen2latchlogo0", true);
+        const AsyncWebParameter *screen2latchlogo0 = request->getParam("screen2latchlogo0", true);
         Serial.println(screen2latchlogo0->value().c_str());
         if (strcmp(screen2latchlogo0->value().c_str(), "---") == 0)
         {
@@ -883,19 +883,19 @@ void handlerSetup()
         }
 
         JsonArray button0_actionarray = button0.createNestedArray("actionarray");
-        AsyncWebParameter *screen2button0action0 = request->getParam("screen2button0action0", true);
+        const AsyncWebParameter *screen2button0action0 = request->getParam("screen2button0action0", true);
         button0_actionarray.add(screen2button0action0->value().c_str());
-        AsyncWebParameter *screen2button0action1 = request->getParam("screen2button0action1", true);
+        const AsyncWebParameter *screen2button0action1 = request->getParam("screen2button0action1", true);
         button0_actionarray.add(screen2button0action1->value().c_str());
-        AsyncWebParameter *screen2button0action2 = request->getParam("screen2button0action2", true);
+        const AsyncWebParameter *screen2button0action2 = request->getParam("screen2button0action2", true);
         button0_actionarray.add(screen2button0action2->value().c_str());
 
         JsonArray button0_valuearray = button0.createNestedArray("valuearray");
-        AsyncWebParameter *screen2button0value0 = request->getParam("screen2button0value0", true);
+        const AsyncWebParameter *screen2button0value0 = request->getParam("screen2button0value0", true);
         button0_valuearray.add(screen2button0value0->value().c_str());
-        AsyncWebParameter *screen2button0value1 = request->getParam("screen2button0value1", true);
+        const AsyncWebParameter *screen2button0value1 = request->getParam("screen2button0value1", true);
         button0_valuearray.add(screen2button0value1->value().c_str());
-        AsyncWebParameter *screen2button0value2 = request->getParam("screen2button0value2", true);
+        const AsyncWebParameter *screen2button0value2 = request->getParam("screen2button0value2", true);
         button0_valuearray.add(screen2button0value2->value().c_str());
 
         JsonObject button1 = doc.createNestedObject("button1");
@@ -909,7 +909,7 @@ void handlerSetup()
           button1["latch"] = false;
         }
 
-        AsyncWebParameter *screen2latchlogo1 = request->getParam("screen2latchlogo1", true);
+        const AsyncWebParameter *screen2latchlogo1 = request->getParam("screen2latchlogo1", true);
         Serial.println(screen2latchlogo1->value().c_str());
         if (strcmp(screen2latchlogo1->value().c_str(), "---") == 0)
         {
@@ -921,19 +921,19 @@ void handlerSetup()
         }
 
         JsonArray button1_actionarray = button1.createNestedArray("actionarray");
-        AsyncWebParameter *screen2button1action0 = request->getParam("screen2button1action0", true);
+        const AsyncWebParameter *screen2button1action0 = request->getParam("screen2button1action0", true);
         button1_actionarray.add(screen2button1action0->value().c_str());
-        AsyncWebParameter *screen2button1action1 = request->getParam("screen2button1action1", true);
+        const AsyncWebParameter *screen2button1action1 = request->getParam("screen2button1action1", true);
         button1_actionarray.add(screen2button1action1->value().c_str());
-        AsyncWebParameter *screen2button1action2 = request->getParam("screen2button1action2", true);
+        const AsyncWebParameter *screen2button1action2 = request->getParam("screen2button1action2", true);
         button1_actionarray.add(screen2button1action2->value().c_str());
 
         JsonArray button1_valuearray = button1.createNestedArray("valuearray");
-        AsyncWebParameter *screen2button1value0 = request->getParam("screen2button1value0", true);
+        const AsyncWebParameter *screen2button1value0 = request->getParam("screen2button1value0", true);
         button1_valuearray.add(screen2button1value0->value().c_str());
-        AsyncWebParameter *screen2button1value1 = request->getParam("screen2button1value1", true);
+        const AsyncWebParameter *screen2button1value1 = request->getParam("screen2button1value1", true);
         button1_valuearray.add(screen2button1value1->value().c_str());
-        AsyncWebParameter *screen2button1value2 = request->getParam("screen2button1value2", true);
+        const AsyncWebParameter *screen2button1value2 = request->getParam("screen2button1value2", true);
         button1_valuearray.add(screen2button1value2->value().c_str());
 
         JsonObject button2 = doc.createNestedObject("button2");
@@ -947,7 +947,7 @@ void handlerSetup()
           button2["latch"] = false;
         }
 
-        AsyncWebParameter *screen2latchlogo2 = request->getParam("screen2latchlogo2", true);
+        const AsyncWebParameter *screen2latchlogo2 = request->getParam("screen2latchlogo2", true);
         Serial.println(screen2latchlogo2->value().c_str());
         if (strcmp(screen2latchlogo2->value().c_str(), "---") == 0)
         {
@@ -959,19 +959,19 @@ void handlerSetup()
         }
 
         JsonArray button2_actionarray = button2.createNestedArray("actionarray");
-        AsyncWebParameter *screen2button2action0 = request->getParam("screen2button2action0", true);
+        const AsyncWebParameter *screen2button2action0 = request->getParam("screen2button2action0", true);
         button2_actionarray.add(screen2button2action0->value().c_str());
-        AsyncWebParameter *screen2button2action1 = request->getParam("screen2button2action1", true);
+        const AsyncWebParameter *screen2button2action1 = request->getParam("screen2button2action1", true);
         button2_actionarray.add(screen2button2action1->value().c_str());
-        AsyncWebParameter *screen2button2action2 = request->getParam("screen2button2action2", true);
+        const AsyncWebParameter *screen2button2action2 = request->getParam("screen2button2action2", true);
         button2_actionarray.add(screen2button2action2->value().c_str());
 
         JsonArray button2_valuearray = button2.createNestedArray("valuearray");
-        AsyncWebParameter *screen2button2value0 = request->getParam("screen2button2value0", true);
+        const AsyncWebParameter *screen2button2value0 = request->getParam("screen2button2value0", true);
         button2_valuearray.add(screen2button2value0->value().c_str());
-        AsyncWebParameter *screen2button2value1 = request->getParam("screen2button2value1", true);
+        const AsyncWebParameter *screen2button2value1 = request->getParam("screen2button2value1", true);
         button2_valuearray.add(screen2button2value1->value().c_str());
-        AsyncWebParameter *screen2button2value2 = request->getParam("screen2button2value2", true);
+        const AsyncWebParameter *screen2button2value2 = request->getParam("screen2button2value2", true);
         button2_valuearray.add(screen2button2value2->value().c_str());
 
         JsonObject button3 = doc.createNestedObject("button3");
@@ -985,7 +985,7 @@ void handlerSetup()
           button3["latch"] = false;
         }
 
-        AsyncWebParameter *screen2latchlogo3 = request->getParam("screen2latchlogo3", true);
+        const AsyncWebParameter *screen2latchlogo3 = request->getParam("screen2latchlogo3", true);
         Serial.println(screen2latchlogo3->value().c_str());
         if (strcmp(screen2latchlogo3->value().c_str(), "---") == 0)
         {
@@ -997,19 +997,19 @@ void handlerSetup()
         }
 
         JsonArray button3_actionarray = button3.createNestedArray("actionarray");
-        AsyncWebParameter *screen2button3action0 = request->getParam("screen2button3action0", true);
+        const AsyncWebParameter *screen2button3action0 = request->getParam("screen2button3action0", true);
         button3_actionarray.add(screen2button3action0->value().c_str());
-        AsyncWebParameter *screen2button3action1 = request->getParam("screen2button3action1", true);
+        const AsyncWebParameter *screen2button3action1 = request->getParam("screen2button3action1", true);
         button3_actionarray.add(screen2button3action1->value().c_str());
-        AsyncWebParameter *screen2button3action2 = request->getParam("screen2button3action2", true);
+        const AsyncWebParameter *screen2button3action2 = request->getParam("screen2button3action2", true);
         button3_actionarray.add(screen2button3action2->value().c_str());
 
         JsonArray button3_valuearray = button3.createNestedArray("valuearray");
-        AsyncWebParameter *screen2button3value0 = request->getParam("screen2button3value0", true);
+        const AsyncWebParameter *screen2button3value0 = request->getParam("screen2button3value0", true);
         button3_valuearray.add(screen2button3value0->value().c_str());
-        AsyncWebParameter *screen2button3value1 = request->getParam("screen2button3value1", true);
+        const AsyncWebParameter *screen2button3value1 = request->getParam("screen2button3value1", true);
         button3_valuearray.add(screen2button3value1->value().c_str());
-        AsyncWebParameter *screen2button3value2 = request->getParam("screen2button3value2", true);
+        const AsyncWebParameter *screen2button3value2 = request->getParam("screen2button3value2", true);
         button3_valuearray.add(screen2button3value2->value().c_str());
 
         JsonObject button4 = doc.createNestedObject("button4");
@@ -1023,7 +1023,7 @@ void handlerSetup()
           button4["latch"] = false;
         }
 
-        AsyncWebParameter *screen2latchlogo4 = request->getParam("screen2latchlogo4", true);
+        const AsyncWebParameter *screen2latchlogo4 = request->getParam("screen2latchlogo4", true);
         Serial.println(screen2latchlogo4->value().c_str());
         if (strcmp(screen2latchlogo4->value().c_str(), "---") == 0)
         {
@@ -1035,19 +1035,19 @@ void handlerSetup()
         }
 
         JsonArray button4_actionarray = button4.createNestedArray("actionarray");
-        AsyncWebParameter *screen2button4action0 = request->getParam("screen2button4action0", true);
+        const AsyncWebParameter *screen2button4action0 = request->getParam("screen2button4action0", true);
         button4_actionarray.add(screen2button4action0->value().c_str());
-        AsyncWebParameter *screen2button4action1 = request->getParam("screen2button4action1", true);
+        const AsyncWebParameter *screen2button4action1 = request->getParam("screen2button4action1", true);
         button4_actionarray.add(screen2button4action1->value().c_str());
-        AsyncWebParameter *screen2button4action2 = request->getParam("screen2button4action2", true);
+        const AsyncWebParameter *screen2button4action2 = request->getParam("screen2button4action2", true);
         button4_actionarray.add(screen2button4action2->value().c_str());
 
         JsonArray button4_valuearray = button4.createNestedArray("valuearray");
-        AsyncWebParameter *screen2button4value0 = request->getParam("screen2button4value0", true);
+        const AsyncWebParameter *screen2button4value0 = request->getParam("screen2button4value0", true);
         button4_valuearray.add(screen2button4value0->value().c_str());
-        AsyncWebParameter *screen2button4value1 = request->getParam("screen2button4value1", true);
+        const AsyncWebParameter *screen2button4value1 = request->getParam("screen2button4value1", true);
         button4_valuearray.add(screen2button4value1->value().c_str());
-        AsyncWebParameter *screen2button4value2 = request->getParam("screen2button4value2", true);
+        const AsyncWebParameter *screen2button4value2 = request->getParam("screen2button4value2", true);
         button4_valuearray.add(screen2button4value2->value().c_str());
 
         if (serializeJsonPretty(doc, file) == 0)
@@ -1074,15 +1074,15 @@ void handlerSetup()
 
         JsonObject menu = doc.to<JsonObject>();
 
-        AsyncWebParameter *screen3logo0 = request->getParam("screen3logo0", true);
+        const AsyncWebParameter *screen3logo0 = request->getParam("screen3logo0", true);
         menu["logo0"] = screen3logo0->value().c_str();
-        AsyncWebParameter *screen3logo1 = request->getParam("screen3logo1", true);
+        const AsyncWebParameter *screen3logo1 = request->getParam("screen3logo1", true);
         menu["logo1"] = screen3logo1->value().c_str();
-        AsyncWebParameter *screen3logo2 = request->getParam("screen3logo2", true);
+        const AsyncWebParameter *screen3logo2 = request->getParam("screen3logo2", true);
         menu["logo2"] = screen3logo2->value().c_str();
-        AsyncWebParameter *screen3logo3 = request->getParam("screen3logo3", true);
+        const AsyncWebParameter *screen3logo3 = request->getParam("screen3logo3", true);
         menu["logo3"] = screen3logo3->value().c_str();
-        AsyncWebParameter *screen3logo4 = request->getParam("screen3logo4", true);
+        const AsyncWebParameter *screen3logo4 = request->getParam("screen3logo4", true);
         menu["logo4"] = screen3logo4->value().c_str();
 
         JsonObject button0 = doc.createNestedObject("button0");
@@ -1096,7 +1096,7 @@ void handlerSetup()
           button0["latch"] = false;
         }
 
-        AsyncWebParameter *screen3latchlogo0 = request->getParam("screen3latchlogo0", true);
+        const AsyncWebParameter *screen3latchlogo0 = request->getParam("screen3latchlogo0", true);
         Serial.println(screen3latchlogo0->value().c_str());
         if (strcmp(screen3latchlogo0->value().c_str(), "---") == 0)
         {
@@ -1108,19 +1108,19 @@ void handlerSetup()
         }
 
         JsonArray button0_actionarray = button0.createNestedArray("actionarray");
-        AsyncWebParameter *screen3button0action0 = request->getParam("screen3button0action0", true);
+        const AsyncWebParameter *screen3button0action0 = request->getParam("screen3button0action0", true);
         button0_actionarray.add(screen3button0action0->value().c_str());
-        AsyncWebParameter *screen3button0action1 = request->getParam("screen3button0action1", true);
+        const AsyncWebParameter *screen3button0action1 = request->getParam("screen3button0action1", true);
         button0_actionarray.add(screen3button0action1->value().c_str());
-        AsyncWebParameter *screen3button0action2 = request->getParam("screen3button0action2", true);
+        const AsyncWebParameter *screen3button0action2 = request->getParam("screen3button0action2", true);
         button0_actionarray.add(screen3button0action2->value().c_str());
 
         JsonArray button0_valuearray = button0.createNestedArray("valuearray");
-        AsyncWebParameter *screen3button0value0 = request->getParam("screen3button0value0", true);
+        const AsyncWebParameter *screen3button0value0 = request->getParam("screen3button0value0", true);
         button0_valuearray.add(screen3button0value0->value().c_str());
-        AsyncWebParameter *screen3button0value1 = request->getParam("screen3button0value1", true);
+        const AsyncWebParameter *screen3button0value1 = request->getParam("screen3button0value1", true);
         button0_valuearray.add(screen3button0value1->value().c_str());
-        AsyncWebParameter *screen3button0value2 = request->getParam("screen3button0value2", true);
+        const AsyncWebParameter *screen3button0value2 = request->getParam("screen3button0value2", true);
         button0_valuearray.add(screen3button0value2->value().c_str());
 
         JsonObject button1 = doc.createNestedObject("button1");
@@ -1134,7 +1134,7 @@ void handlerSetup()
           button1["latch"] = false;
         }
 
-        AsyncWebParameter *screen3latchlogo1 = request->getParam("screen3latchlogo1", true);
+        const AsyncWebParameter *screen3latchlogo1 = request->getParam("screen3latchlogo1", true);
         Serial.println(screen3latchlogo1->value().c_str());
         if (strcmp(screen3latchlogo1->value().c_str(), "---") == 0)
         {
@@ -1146,19 +1146,19 @@ void handlerSetup()
         }
 
         JsonArray button1_actionarray = button1.createNestedArray("actionarray");
-        AsyncWebParameter *screen3button1action0 = request->getParam("screen3button1action0", true);
+        const AsyncWebParameter *screen3button1action0 = request->getParam("screen3button1action0", true);
         button1_actionarray.add(screen3button1action0->value().c_str());
-        AsyncWebParameter *screen3button1action1 = request->getParam("screen3button1action1", true);
+        const AsyncWebParameter *screen3button1action1 = request->getParam("screen3button1action1", true);
         button1_actionarray.add(screen3button1action1->value().c_str());
-        AsyncWebParameter *screen3button1action2 = request->getParam("screen3button1action2", true);
+        const AsyncWebParameter *screen3button1action2 = request->getParam("screen3button1action2", true);
         button1_actionarray.add(screen3button1action2->value().c_str());
 
         JsonArray button1_valuearray = button1.createNestedArray("valuearray");
-        AsyncWebParameter *screen3button1value0 = request->getParam("screen3button1value0", true);
+        const AsyncWebParameter *screen3button1value0 = request->getParam("screen3button1value0", true);
         button1_valuearray.add(screen3button1value0->value().c_str());
-        AsyncWebParameter *screen3button1value1 = request->getParam("screen3button1value1", true);
+        const AsyncWebParameter *screen3button1value1 = request->getParam("screen3button1value1", true);
         button1_valuearray.add(screen3button1value1->value().c_str());
-        AsyncWebParameter *screen3button1value2 = request->getParam("screen3button1value2", true);
+        const AsyncWebParameter *screen3button1value2 = request->getParam("screen3button1value2", true);
         button1_valuearray.add(screen3button1value2->value().c_str());
 
         JsonObject button2 = doc.createNestedObject("button2");
@@ -1172,7 +1172,7 @@ void handlerSetup()
           button2["latch"] = false;
         }
 
-        AsyncWebParameter *screen3latchlogo2 = request->getParam("screen3latchlogo2", true);
+        const AsyncWebParameter *screen3latchlogo2 = request->getParam("screen3latchlogo2", true);
         Serial.println(screen3latchlogo2->value().c_str());
         if (strcmp(screen3latchlogo2->value().c_str(), "---") == 0)
         {
@@ -1184,19 +1184,19 @@ void handlerSetup()
         }
 
         JsonArray button2_actionarray = button2.createNestedArray("actionarray");
-        AsyncWebParameter *screen3button2action0 = request->getParam("screen3button2action0", true);
+        const AsyncWebParameter *screen3button2action0 = request->getParam("screen3button2action0", true);
         button2_actionarray.add(screen3button2action0->value().c_str());
-        AsyncWebParameter *screen3button2action1 = request->getParam("screen3button2action1", true);
+        const AsyncWebParameter *screen3button2action1 = request->getParam("screen3button2action1", true);
         button2_actionarray.add(screen3button2action1->value().c_str());
-        AsyncWebParameter *screen3button2action2 = request->getParam("screen3button2action2", true);
+        const AsyncWebParameter *screen3button2action2 = request->getParam("screen3button2action2", true);
         button2_actionarray.add(screen3button2action2->value().c_str());
 
         JsonArray button2_valuearray = button2.createNestedArray("valuearray");
-        AsyncWebParameter *screen3button2value0 = request->getParam("screen3button2value0", true);
+        const AsyncWebParameter *screen3button2value0 = request->getParam("screen3button2value0", true);
         button2_valuearray.add(screen3button2value0->value().c_str());
-        AsyncWebParameter *screen3button2value1 = request->getParam("screen3button2value1", true);
+        const AsyncWebParameter *screen3button2value1 = request->getParam("screen3button2value1", true);
         button2_valuearray.add(screen3button2value1->value().c_str());
-        AsyncWebParameter *screen3button2value2 = request->getParam("screen3button2value2", true);
+        const AsyncWebParameter *screen3button2value2 = request->getParam("screen3button2value2", true);
         button2_valuearray.add(screen3button2value2->value().c_str());
 
         JsonObject button3 = doc.createNestedObject("button3");
@@ -1210,7 +1210,7 @@ void handlerSetup()
           button3["latch"] = false;
         }
 
-        AsyncWebParameter *screen3latchlogo3 = request->getParam("screen3latchlogo3", true);
+        const AsyncWebParameter *screen3latchlogo3 = request->getParam("screen3latchlogo3", true);
         Serial.println(screen3latchlogo3->value().c_str());
         if (strcmp(screen3latchlogo3->value().c_str(), "---") == 0)
         {
@@ -1222,19 +1222,19 @@ void handlerSetup()
         }
 
         JsonArray button3_actionarray = button3.createNestedArray("actionarray");
-        AsyncWebParameter *screen3button3action0 = request->getParam("screen3button3action0", true);
+        const AsyncWebParameter *screen3button3action0 = request->getParam("screen3button3action0", true);
         button3_actionarray.add(screen3button3action0->value().c_str());
-        AsyncWebParameter *screen3button3action1 = request->getParam("screen3button3action1", true);
+        const AsyncWebParameter *screen3button3action1 = request->getParam("screen3button3action1", true);
         button3_actionarray.add(screen3button3action1->value().c_str());
-        AsyncWebParameter *screen3button3action2 = request->getParam("screen3button3action2", true);
+        const AsyncWebParameter *screen3button3action2 = request->getParam("screen3button3action2", true);
         button3_actionarray.add(screen3button3action2->value().c_str());
 
         JsonArray button3_valuearray = button3.createNestedArray("valuearray");
-        AsyncWebParameter *screen3button3value0 = request->getParam("screen3button3value0", true);
+        const AsyncWebParameter *screen3button3value0 = request->getParam("screen3button3value0", true);
         button3_valuearray.add(screen3button3value0->value().c_str());
-        AsyncWebParameter *screen3button3value1 = request->getParam("screen3button3value1", true);
+        const AsyncWebParameter *screen3button3value1 = request->getParam("screen3button3value1", true);
         button3_valuearray.add(screen3button3value1->value().c_str());
-        AsyncWebParameter *screen3button3value2 = request->getParam("screen3button3value2", true);
+        const AsyncWebParameter *screen3button3value2 = request->getParam("screen3button3value2", true);
         button3_valuearray.add(screen3button3value2->value().c_str());
 
         JsonObject button4 = doc.createNestedObject("button4");
@@ -1248,7 +1248,7 @@ void handlerSetup()
           button4["latch"] = false;
         }
 
-        AsyncWebParameter *screen3latchlogo4 = request->getParam("screen3latchlogo4", true);
+        const AsyncWebParameter *screen3latchlogo4 = request->getParam("screen3latchlogo4", true);
         Serial.println(screen3latchlogo4->value().c_str());
         if (strcmp(screen3latchlogo4->value().c_str(), "---") == 0)
         {
@@ -1260,19 +1260,19 @@ void handlerSetup()
         }
 
         JsonArray button4_actionarray = button4.createNestedArray("actionarray");
-        AsyncWebParameter *screen3button4action0 = request->getParam("screen3button4action0", true);
+        const AsyncWebParameter *screen3button4action0 = request->getParam("screen3button4action0", true);
         button4_actionarray.add(screen3button4action0->value().c_str());
-        AsyncWebParameter *screen3button4action1 = request->getParam("screen3button4action1", true);
+        const AsyncWebParameter *screen3button4action1 = request->getParam("screen3button4action1", true);
         button4_actionarray.add(screen3button4action1->value().c_str());
-        AsyncWebParameter *screen3button4action2 = request->getParam("screen3button4action2", true);
+        const AsyncWebParameter *screen3button4action2 = request->getParam("screen3button4action2", true);
         button4_actionarray.add(screen3button4action2->value().c_str());
 
         JsonArray button4_valuearray = button4.createNestedArray("valuearray");
-        AsyncWebParameter *screen3button4value0 = request->getParam("screen3button4value0", true);
+        const AsyncWebParameter *screen3button4value0 = request->getParam("screen3button4value0", true);
         button4_valuearray.add(screen3button4value0->value().c_str());
-        AsyncWebParameter *screen3button4value1 = request->getParam("screen3button4value1", true);
+        const AsyncWebParameter *screen3button4value1 = request->getParam("screen3button4value1", true);
         button4_valuearray.add(screen3button4value1->value().c_str());
-        AsyncWebParameter *screen3button4value2 = request->getParam("screen3button4value2", true);
+        const AsyncWebParameter *screen3button4value2 = request->getParam("screen3button4value2", true);
         button4_valuearray.add(screen3button4value2->value().c_str());
 
         if (serializeJsonPretty(doc, file) == 0)
@@ -1299,15 +1299,15 @@ void handlerSetup()
 
         JsonObject menu = doc.to<JsonObject>();
 
-        AsyncWebParameter *screen4logo0 = request->getParam("screen4logo0", true);
+        const AsyncWebParameter *screen4logo0 = request->getParam("screen4logo0", true);
         menu["logo0"] = screen4logo0->value().c_str();
-        AsyncWebParameter *screen4logo1 = request->getParam("screen4logo1", true);
+        const AsyncWebParameter *screen4logo1 = request->getParam("screen4logo1", true);
         menu["logo1"] = screen4logo1->value().c_str();
-        AsyncWebParameter *screen4logo2 = request->getParam("screen4logo2", true);
+        const AsyncWebParameter *screen4logo2 = request->getParam("screen4logo2", true);
         menu["logo2"] = screen4logo2->value().c_str();
-        AsyncWebParameter *screen4logo3 = request->getParam("screen4logo3", true);
+        const AsyncWebParameter *screen4logo3 = request->getParam("screen4logo3", true);
         menu["logo3"] = screen4logo3->value().c_str();
-        AsyncWebParameter *screen4logo4 = request->getParam("screen4logo4", true);
+        const AsyncWebParameter *screen4logo4 = request->getParam("screen4logo4", true);
         menu["logo4"] = screen4logo4->value().c_str();
 
         JsonObject button0 = doc.createNestedObject("button0");
@@ -1321,7 +1321,7 @@ void handlerSetup()
           button0["latch"] = false;
         }
 
-        AsyncWebParameter *screen4latchlogo0 = request->getParam("screen4latchlogo0", true);
+        const AsyncWebParameter *screen4latchlogo0 = request->getParam("screen4latchlogo0", true);
         Serial.println(screen4latchlogo0->value().c_str());
         if (strcmp(screen4latchlogo0->value().c_str(), "---") == 0)
         {
@@ -1333,19 +1333,19 @@ void handlerSetup()
         }
 
         JsonArray button0_actionarray = button0.createNestedArray("actionarray");
-        AsyncWebParameter *screen4button0action0 = request->getParam("screen4button0action0", true);
+        const AsyncWebParameter *screen4button0action0 = request->getParam("screen4button0action0", true);
         button0_actionarray.add(screen4button0action0->value().c_str());
-        AsyncWebParameter *screen4button0action1 = request->getParam("screen4button0action1", true);
+        const AsyncWebParameter *screen4button0action1 = request->getParam("screen4button0action1", true);
         button0_actionarray.add(screen4button0action1->value().c_str());
-        AsyncWebParameter *screen4button0action2 = request->getParam("screen4button0action2", true);
+        const AsyncWebParameter *screen4button0action2 = request->getParam("screen4button0action2", true);
         button0_actionarray.add(screen4button0action2->value().c_str());
 
         JsonArray button0_valuearray = button0.createNestedArray("valuearray");
-        AsyncWebParameter *screen4button0value0 = request->getParam("screen4button0value0", true);
+        const AsyncWebParameter *screen4button0value0 = request->getParam("screen4button0value0", true);
         button0_valuearray.add(screen4button0value0->value().c_str());
-        AsyncWebParameter *screen4button0value1 = request->getParam("screen4button0value1", true);
+        const AsyncWebParameter *screen4button0value1 = request->getParam("screen4button0value1", true);
         button0_valuearray.add(screen4button0value1->value().c_str());
-        AsyncWebParameter *screen4button0value2 = request->getParam("screen4button0value2", true);
+        const AsyncWebParameter *screen4button0value2 = request->getParam("screen4button0value2", true);
         button0_valuearray.add(screen4button0value2->value().c_str());
 
         JsonObject button1 = doc.createNestedObject("button1");
@@ -1359,7 +1359,7 @@ void handlerSetup()
           button1["latch"] = false;
         }
 
-        AsyncWebParameter *screen4latchlogo1 = request->getParam("screen4latchlogo1", true);
+        const AsyncWebParameter *screen4latchlogo1 = request->getParam("screen4latchlogo1", true);
         Serial.println(screen4latchlogo1->value().c_str());
         if (strcmp(screen4latchlogo1->value().c_str(), "---") == 0)
         {
@@ -1371,19 +1371,19 @@ void handlerSetup()
         }
 
         JsonArray button1_actionarray = button1.createNestedArray("actionarray");
-        AsyncWebParameter *screen4button1action0 = request->getParam("screen4button1action0", true);
+        const AsyncWebParameter *screen4button1action0 = request->getParam("screen4button1action0", true);
         button1_actionarray.add(screen4button1action0->value().c_str());
-        AsyncWebParameter *screen4button1action1 = request->getParam("screen4button1action1", true);
+        const AsyncWebParameter *screen4button1action1 = request->getParam("screen4button1action1", true);
         button1_actionarray.add(screen4button1action1->value().c_str());
-        AsyncWebParameter *screen4button1action2 = request->getParam("screen4button1action2", true);
+        const AsyncWebParameter *screen4button1action2 = request->getParam("screen4button1action2", true);
         button1_actionarray.add(screen4button1action2->value().c_str());
 
         JsonArray button1_valuearray = button1.createNestedArray("valuearray");
-        AsyncWebParameter *screen4button1value0 = request->getParam("screen4button1value0", true);
+        const AsyncWebParameter *screen4button1value0 = request->getParam("screen4button1value0", true);
         button1_valuearray.add(screen4button1value0->value().c_str());
-        AsyncWebParameter *screen4button1value1 = request->getParam("screen4button1value1", true);
+        const AsyncWebParameter *screen4button1value1 = request->getParam("screen4button1value1", true);
         button1_valuearray.add(screen4button1value1->value().c_str());
-        AsyncWebParameter *screen4button1value2 = request->getParam("screen4button1value2", true);
+        const AsyncWebParameter *screen4button1value2 = request->getParam("screen4button1value2", true);
         button1_valuearray.add(screen4button1value2->value().c_str());
 
         JsonObject button2 = doc.createNestedObject("button2");
@@ -1397,7 +1397,7 @@ void handlerSetup()
           button2["latch"] = false;
         }
 
-        AsyncWebParameter *screen4latchlogo2 = request->getParam("screen4latchlogo2", true);
+        const AsyncWebParameter *screen4latchlogo2 = request->getParam("screen4latchlogo2", true);
         Serial.println(screen4latchlogo2->value().c_str());
         if (strcmp(screen4latchlogo2->value().c_str(), "---") == 0)
         {
@@ -1409,19 +1409,19 @@ void handlerSetup()
         }
 
         JsonArray button2_actionarray = button2.createNestedArray("actionarray");
-        AsyncWebParameter *screen4button2action0 = request->getParam("screen4button2action0", true);
+        const AsyncWebParameter *screen4button2action0 = request->getParam("screen4button2action0", true);
         button2_actionarray.add(screen4button2action0->value().c_str());
-        AsyncWebParameter *screen4button2action1 = request->getParam("screen4button2action1", true);
+        const AsyncWebParameter *screen4button2action1 = request->getParam("screen4button2action1", true);
         button2_actionarray.add(screen4button2action1->value().c_str());
-        AsyncWebParameter *screen4button2action2 = request->getParam("screen4button2action2", true);
+        const AsyncWebParameter *screen4button2action2 = request->getParam("screen4button2action2", true);
         button2_actionarray.add(screen4button2action2->value().c_str());
 
         JsonArray button2_valuearray = button2.createNestedArray("valuearray");
-        AsyncWebParameter *screen4button2value0 = request->getParam("screen4button2value0", true);
+        const AsyncWebParameter *screen4button2value0 = request->getParam("screen4button2value0", true);
         button2_valuearray.add(screen4button2value0->value().c_str());
-        AsyncWebParameter *screen4button2value1 = request->getParam("screen4button2value1", true);
+        const AsyncWebParameter *screen4button2value1 = request->getParam("screen4button2value1", true);
         button2_valuearray.add(screen4button2value1->value().c_str());
-        AsyncWebParameter *screen4button2value2 = request->getParam("screen4button2value2", true);
+        const AsyncWebParameter *screen4button2value2 = request->getParam("screen4button2value2", true);
         button2_valuearray.add(screen4button2value2->value().c_str());
 
         JsonObject button3 = doc.createNestedObject("button3");
@@ -1435,7 +1435,7 @@ void handlerSetup()
           button3["latch"] = false;
         }
 
-        AsyncWebParameter *screen4latchlogo3 = request->getParam("screen4latchlogo3", true);
+        const AsyncWebParameter *screen4latchlogo3 = request->getParam("screen4latchlogo3", true);
         Serial.println(screen4latchlogo3->value().c_str());
         if (strcmp(screen4latchlogo3->value().c_str(), "---") == 0)
         {
@@ -1447,19 +1447,19 @@ void handlerSetup()
         }
 
         JsonArray button3_actionarray = button3.createNestedArray("actionarray");
-        AsyncWebParameter *screen4button3action0 = request->getParam("screen4button3action0", true);
+        const AsyncWebParameter *screen4button3action0 = request->getParam("screen4button3action0", true);
         button3_actionarray.add(screen4button3action0->value().c_str());
-        AsyncWebParameter *screen4button3action1 = request->getParam("screen4button3action1", true);
+        const AsyncWebParameter *screen4button3action1 = request->getParam("screen4button3action1", true);
         button3_actionarray.add(screen4button3action1->value().c_str());
-        AsyncWebParameter *screen4button3action2 = request->getParam("screen4button3action2", true);
+        const AsyncWebParameter *screen4button3action2 = request->getParam("screen4button3action2", true);
         button3_actionarray.add(screen4button3action2->value().c_str());
 
         JsonArray button3_valuearray = button3.createNestedArray("valuearray");
-        AsyncWebParameter *screen4button3value0 = request->getParam("screen4button3value0", true);
+        const AsyncWebParameter *screen4button3value0 = request->getParam("screen4button3value0", true);
         button3_valuearray.add(screen4button3value0->value().c_str());
-        AsyncWebParameter *screen4button3value1 = request->getParam("screen4button3value1", true);
+        const AsyncWebParameter *screen4button3value1 = request->getParam("screen4button3value1", true);
         button3_valuearray.add(screen4button3value1->value().c_str());
-        AsyncWebParameter *screen4button3value2 = request->getParam("screen4button3value2", true);
+        const AsyncWebParameter *screen4button3value2 = request->getParam("screen4button3value2", true);
         button3_valuearray.add(screen4button3value2->value().c_str());
 
         JsonObject button4 = doc.createNestedObject("button4");
@@ -1473,7 +1473,7 @@ void handlerSetup()
           button4["latch"] = false;
         }
 
-        AsyncWebParameter *screen4latchlogo4 = request->getParam("screen4latchlogo4", true);
+        const AsyncWebParameter *screen4latchlogo4 = request->getParam("screen4latchlogo4", true);
         Serial.println(screen4latchlogo4->value().c_str());
         if (strcmp(screen4latchlogo4->value().c_str(), "---") == 0)
         {
@@ -1485,19 +1485,19 @@ void handlerSetup()
         }
 
         JsonArray button4_actionarray = button4.createNestedArray("actionarray");
-        AsyncWebParameter *screen4button4action0 = request->getParam("screen4button4action0", true);
+        const AsyncWebParameter *screen4button4action0 = request->getParam("screen4button4action0", true);
         button4_actionarray.add(screen4button4action0->value().c_str());
-        AsyncWebParameter *screen4button4action1 = request->getParam("screen4button4action1", true);
+        const AsyncWebParameter *screen4button4action1 = request->getParam("screen4button4action1", true);
         button4_actionarray.add(screen4button4action1->value().c_str());
-        AsyncWebParameter *screen4button4action2 = request->getParam("screen4button4action2", true);
+        const AsyncWebParameter *screen4button4action2 = request->getParam("screen4button4action2", true);
         button4_actionarray.add(screen4button4action2->value().c_str());
 
         JsonArray button4_valuearray = button4.createNestedArray("valuearray");
-        AsyncWebParameter *screen4button4value0 = request->getParam("screen4button4value0", true);
+        const AsyncWebParameter *screen4button4value0 = request->getParam("screen4button4value0", true);
         button4_valuearray.add(screen4button4value0->value().c_str());
-        AsyncWebParameter *screen4button4value1 = request->getParam("screen4button4value1", true);
+        const AsyncWebParameter *screen4button4value1 = request->getParam("screen4button4value1", true);
         button4_valuearray.add(screen4button4value1->value().c_str());
-        AsyncWebParameter *screen4button4value2 = request->getParam("screen4button4value2", true);
+        const AsyncWebParameter *screen4button4value2 = request->getParam("screen4button4value2", true);
         button4_valuearray.add(screen4button4value2->value().c_str());
 
         if (serializeJsonPretty(doc, file) == 0)
@@ -1524,15 +1524,15 @@ void handlerSetup()
 
         JsonObject menu = doc.to<JsonObject>();
 
-        AsyncWebParameter *screen5logo0 = request->getParam("screen5logo0", true);
+        const AsyncWebParameter *screen5logo0 = request->getParam("screen5logo0", true);
         menu["logo0"] = screen5logo0->value().c_str();
-        AsyncWebParameter *screen5logo1 = request->getParam("screen5logo1", true);
+        const AsyncWebParameter *screen5logo1 = request->getParam("screen5logo1", true);
         menu["logo1"] = screen5logo1->value().c_str();
-        AsyncWebParameter *screen5logo2 = request->getParam("screen5logo2", true);
+        const AsyncWebParameter *screen5logo2 = request->getParam("screen5logo2", true);
         menu["logo2"] = screen5logo2->value().c_str();
-        AsyncWebParameter *screen5logo3 = request->getParam("screen5logo3", true);
+        const AsyncWebParameter *screen5logo3 = request->getParam("screen5logo3", true);
         menu["logo3"] = screen5logo3->value().c_str();
-        AsyncWebParameter *screen5logo4 = request->getParam("screen5logo4", true);
+        const AsyncWebParameter *screen5logo4 = request->getParam("screen5logo4", true);
         menu["logo4"] = screen5logo4->value().c_str();
 
         JsonObject button0 = doc.createNestedObject("button0");
@@ -1546,7 +1546,7 @@ void handlerSetup()
           button0["latch"] = false;
         }
 
-        AsyncWebParameter *screen5latchlogo0 = request->getParam("screen5latchlogo0", true);
+        const AsyncWebParameter *screen5latchlogo0 = request->getParam("screen5latchlogo0", true);
         Serial.println(screen5latchlogo0->value().c_str());
         if (strcmp(screen5latchlogo0->value().c_str(), "---") == 0)
         {
@@ -1558,19 +1558,19 @@ void handlerSetup()
         }
 
         JsonArray button0_actionarray = button0.createNestedArray("actionarray");
-        AsyncWebParameter *screen5button0action0 = request->getParam("screen5button0action0", true);
+        const AsyncWebParameter *screen5button0action0 = request->getParam("screen5button0action0", true);
         button0_actionarray.add(screen5button0action0->value().c_str());
-        AsyncWebParameter *screen5button0action1 = request->getParam("screen5button0action1", true);
+        const AsyncWebParameter *screen5button0action1 = request->getParam("screen5button0action1", true);
         button0_actionarray.add(screen5button0action1->value().c_str());
-        AsyncWebParameter *screen5button0action2 = request->getParam("screen5button0action2", true);
+        const AsyncWebParameter *screen5button0action2 = request->getParam("screen5button0action2", true);
         button0_actionarray.add(screen5button0action2->value().c_str());
 
         JsonArray button0_valuearray = button0.createNestedArray("valuearray");
-        AsyncWebParameter *screen5button0value0 = request->getParam("screen5button0value0", true);
+        const AsyncWebParameter *screen5button0value0 = request->getParam("screen5button0value0", true);
         button0_valuearray.add(screen5button0value0->value().c_str());
-        AsyncWebParameter *screen5button0value1 = request->getParam("screen5button0value1", true);
+        const AsyncWebParameter *screen5button0value1 = request->getParam("screen5button0value1", true);
         button0_valuearray.add(screen5button0value1->value().c_str());
-        AsyncWebParameter *screen5button0value2 = request->getParam("screen5button0value2", true);
+        const AsyncWebParameter *screen5button0value2 = request->getParam("screen5button0value2", true);
         button0_valuearray.add(screen5button0value2->value().c_str());
 
         JsonObject button1 = doc.createNestedObject("button1");
@@ -1584,7 +1584,7 @@ void handlerSetup()
           button1["latch"] = false;
         }
 
-        AsyncWebParameter *screen5latchlogo1 = request->getParam("screen5latchlogo1", true);
+        const AsyncWebParameter *screen5latchlogo1 = request->getParam("screen5latchlogo1", true);
         Serial.println(screen5latchlogo1->value().c_str());
         if (strcmp(screen5latchlogo1->value().c_str(), "---") == 0)
         {
@@ -1596,19 +1596,19 @@ void handlerSetup()
         }
 
         JsonArray button1_actionarray = button1.createNestedArray("actionarray");
-        AsyncWebParameter *screen5button1action0 = request->getParam("screen5button1action0", true);
+        const AsyncWebParameter *screen5button1action0 = request->getParam("screen5button1action0", true);
         button1_actionarray.add(screen5button1action0->value().c_str());
-        AsyncWebParameter *screen5button1action1 = request->getParam("screen5button1action1", true);
+        const AsyncWebParameter *screen5button1action1 = request->getParam("screen5button1action1", true);
         button1_actionarray.add(screen5button1action1->value().c_str());
-        AsyncWebParameter *screen5button1action2 = request->getParam("screen5button1action2", true);
+        const AsyncWebParameter *screen5button1action2 = request->getParam("screen5button1action2", true);
         button1_actionarray.add(screen5button1action2->value().c_str());
 
         JsonArray button1_valuearray = button1.createNestedArray("valuearray");
-        AsyncWebParameter *screen5button1value0 = request->getParam("screen5button1value0", true);
+        const AsyncWebParameter *screen5button1value0 = request->getParam("screen5button1value0", true);
         button1_valuearray.add(screen5button1value0->value().c_str());
-        AsyncWebParameter *screen5button1value1 = request->getParam("screen5button1value1", true);
+        const AsyncWebParameter *screen5button1value1 = request->getParam("screen5button1value1", true);
         button1_valuearray.add(screen5button1value1->value().c_str());
-        AsyncWebParameter *screen5button1value2 = request->getParam("screen5button1value2", true);
+        const AsyncWebParameter *screen5button1value2 = request->getParam("screen5button1value2", true);
         button1_valuearray.add(screen5button1value2->value().c_str());
 
         JsonObject button2 = doc.createNestedObject("button2");
@@ -1622,7 +1622,7 @@ void handlerSetup()
           button2["latch"] = false;
         }
 
-        AsyncWebParameter *screen5latchlogo2 = request->getParam("screen5latchlogo2", true);
+        const AsyncWebParameter *screen5latchlogo2 = request->getParam("screen5latchlogo2", true);
         Serial.println(screen5latchlogo2->value().c_str());
         if (strcmp(screen5latchlogo2->value().c_str(), "---") == 0)
         {
@@ -1634,19 +1634,19 @@ void handlerSetup()
         }
 
         JsonArray button2_actionarray = button2.createNestedArray("actionarray");
-        AsyncWebParameter *screen5button2action0 = request->getParam("screen5button2action0", true);
+        const AsyncWebParameter *screen5button2action0 = request->getParam("screen5button2action0", true);
         button2_actionarray.add(screen5button2action0->value().c_str());
-        AsyncWebParameter *screen5button2action1 = request->getParam("screen5button2action1", true);
+        const AsyncWebParameter *screen5button2action1 = request->getParam("screen5button2action1", true);
         button2_actionarray.add(screen5button2action1->value().c_str());
-        AsyncWebParameter *screen5button2action2 = request->getParam("screen5button2action2", true);
+        const AsyncWebParameter *screen5button2action2 = request->getParam("screen5button2action2", true);
         button2_actionarray.add(screen5button2action2->value().c_str());
 
         JsonArray button2_valuearray = button2.createNestedArray("valuearray");
-        AsyncWebParameter *screen5button2value0 = request->getParam("screen5button2value0", true);
+        const AsyncWebParameter *screen5button2value0 = request->getParam("screen5button2value0", true);
         button2_valuearray.add(screen5button2value0->value().c_str());
-        AsyncWebParameter *screen5button2value1 = request->getParam("screen5button2value1", true);
+        const AsyncWebParameter *screen5button2value1 = request->getParam("screen5button2value1", true);
         button2_valuearray.add(screen5button2value1->value().c_str());
-        AsyncWebParameter *screen5button2value2 = request->getParam("screen5button2value2", true);
+        const AsyncWebParameter *screen5button2value2 = request->getParam("screen5button2value2", true);
         button2_valuearray.add(screen5button2value2->value().c_str());
 
         JsonObject button3 = doc.createNestedObject("button3");
@@ -1660,7 +1660,7 @@ void handlerSetup()
           button3["latch"] = false;
         }
 
-        AsyncWebParameter *screen5latchlogo3 = request->getParam("screen5latchlogo3", true);
+        const AsyncWebParameter *screen5latchlogo3 = request->getParam("screen5latchlogo3", true);
         Serial.println(screen5latchlogo3->value().c_str());
         if (strcmp(screen5latchlogo3->value().c_str(), "---") == 0)
         {
@@ -1672,19 +1672,19 @@ void handlerSetup()
         }
 
         JsonArray button3_actionarray = button3.createNestedArray("actionarray");
-        AsyncWebParameter *screen5button3action0 = request->getParam("screen5button3action0", true);
+        const AsyncWebParameter *screen5button3action0 = request->getParam("screen5button3action0", true);
         button3_actionarray.add(screen5button3action0->value().c_str());
-        AsyncWebParameter *screen5button3action1 = request->getParam("screen5button3action1", true);
+        const AsyncWebParameter *screen5button3action1 = request->getParam("screen5button3action1", true);
         button3_actionarray.add(screen5button3action1->value().c_str());
-        AsyncWebParameter *screen5button3action2 = request->getParam("screen5button3action2", true);
+        const AsyncWebParameter *screen5button3action2 = request->getParam("screen5button3action2", true);
         button3_actionarray.add(screen5button3action2->value().c_str());
 
         JsonArray button3_valuearray = button3.createNestedArray("valuearray");
-        AsyncWebParameter *screen5button3value0 = request->getParam("screen5button3value0", true);
+        const AsyncWebParameter *screen5button3value0 = request->getParam("screen5button3value0", true);
         button3_valuearray.add(screen5button3value0->value().c_str());
-        AsyncWebParameter *screen5button3value1 = request->getParam("screen5button3value1", true);
+        const AsyncWebParameter *screen5button3value1 = request->getParam("screen5button3value1", true);
         button3_valuearray.add(screen5button3value1->value().c_str());
-        AsyncWebParameter *screen5button3value2 = request->getParam("screen5button3value2", true);
+        const AsyncWebParameter *screen5button3value2 = request->getParam("screen5button3value2", true);
         button3_valuearray.add(screen5button3value2->value().c_str());
 
         JsonObject button4 = doc.createNestedObject("button4");
@@ -1698,7 +1698,7 @@ void handlerSetup()
           button4["latch"] = false;
         }
 
-        AsyncWebParameter *screen5latchlogo4 = request->getParam("screen5latchlogo4", true);
+        const AsyncWebParameter *screen5latchlogo4 = request->getParam("screen5latchlogo4", true);
         Serial.println(screen5latchlogo4->value().c_str());
         if (strcmp(screen5latchlogo4->value().c_str(), "---") == 0)
         {
@@ -1710,19 +1710,19 @@ void handlerSetup()
         }
 
         JsonArray button4_actionarray = button4.createNestedArray("actionarray");
-        AsyncWebParameter *screen5button4action0 = request->getParam("screen5button4action0", true);
+        const AsyncWebParameter *screen5button4action0 = request->getParam("screen5button4action0", true);
         button4_actionarray.add(screen5button4action0->value().c_str());
-        AsyncWebParameter *screen5button4action1 = request->getParam("screen5button4action1", true);
+        const AsyncWebParameter *screen5button4action1 = request->getParam("screen5button4action1", true);
         button4_actionarray.add(screen5button4action1->value().c_str());
-        AsyncWebParameter *screen5button4action2 = request->getParam("screen5button4action2", true);
+        const AsyncWebParameter *screen5button4action2 = request->getParam("screen5button4action2", true);
         button4_actionarray.add(screen5button4action2->value().c_str());
 
         JsonArray button4_valuearray = button4.createNestedArray("valuearray");
-        AsyncWebParameter *screen5button4value0 = request->getParam("screen5button4value0", true);
+        const AsyncWebParameter *screen5button4value0 = request->getParam("screen5button4value0", true);
         button4_valuearray.add(screen5button4value0->value().c_str());
-        AsyncWebParameter *screen5button4value1 = request->getParam("screen5button4value1", true);
+        const AsyncWebParameter *screen5button4value1 = request->getParam("screen5button4value1", true);
         button4_valuearray.add(screen5button4value1->value().c_str());
-        AsyncWebParameter *screen5button4value2 = request->getParam("screen5button4value2", true);
+        const AsyncWebParameter *screen5button4value2 = request->getParam("screen5button4value2", true);
         button4_valuearray.add(screen5button4value2->value().c_str());
 
         if (serializeJsonPretty(doc, file) == 0)
@@ -1741,7 +1741,7 @@ void handlerSetup()
   webserver.on("/list", HTTP_GET, [](AsyncWebServerRequest *request) {
     if (request->hasParam("dir"))
     {
-      AsyncWebParameter *p = request->getParam("dir");
+      const AsyncWebParameter *p = request->getParam("dir");
       request->send(200, "application/json", handleFileList(p->value().c_str()));
     }
   });
@@ -1788,14 +1788,14 @@ void handlerSetup()
     int i;
     for (i = 0; i < headers; i++)
     {
-      AsyncWebHeader *h = request->getHeader(i);
+      const AsyncWebHeader *h = request->getHeader(i);
       Serial.printf("_HEADER[%s]: %s\n", h->name().c_str(), h->value().c_str());
     }
 
     int params = request->params();
     for (i = 0; i < params; i++)
     {
-      AsyncWebParameter *p = request->getParam(i);
+      const AsyncWebParameter *p = request->getParam(i);
       if (p->isFile())
       {
         Serial.printf("_FILE[%s]: %s, size: %u\n", p->name().c_str(), p->value().c_str(), p->size());
@@ -1859,7 +1859,7 @@ void handlerSetup()
     int filecount = 0;
     for (i = 0; i < params; i++)
     {
-      AsyncWebParameter *p = request->getParam(i);
+      const AsyncWebParameter *p = request->getParam(i);
       Serial.printf("[INFO]: Deleting file: %s\n", p->value().c_str());
       String filename = "/logos/";
       filename += p->value().c_str();
@@ -1888,7 +1888,7 @@ void handlerSetup()
   // ----------------------------- JSON Download Handle ---------------------------------
 
   webserver.on("/download", HTTP_GET, [](AsyncWebServerRequest *request) {
-    AsyncWebParameter *p = request->getParam("file");
+    const AsyncWebParameter *p = request->getParam("file");
     String filerequest = p->value().c_str();
     Serial.printf("[INFO]: Requested file: %s\n", filerequest.c_str());
 

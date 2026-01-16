@@ -86,6 +86,21 @@ I will also point you to my Discord (https://discord.gg/RE3XevS) Where these peo
 If you use capacitive touch:
 - Dustin Watts FT6236 Library (version 1.0.2), https://github.com/DustinWatts/FT6236
 
+### Waveshare ESP32-S3-Touch-LCD-4.3B (RGB 800x480)
+
+This fork adds an optional build target for the **Waveshare ESP32-S3-Touch-LCD-4.3B** (RGB panel, GT911 capacitive touch, CH422G IO expander).
+
+**Additional libraries required** (Arduino Library Manager):
+- LovyanGFX
+- ESP32_IO_Expander
+
+**Build define:**
+- Add `-D WAVESHARE_ESP32S3_TOUCH_LCD_43B` to your build flags.
+
+Notes:
+- The display is driven using LovyanGFX's RGB panel support. If your screen is blank/unstable, tweak the RGB timing constants in `boards/waveshare_esp32s3_touch_lcd_43b.h`.
+- Touch is read via a small GT911 I2C driver (single point) in the same header.
+
 ## Combiner PCB for an ESP32 DevKit C (38-pin only) + ILI9488 Touch Module:
 
 https://github.com/DustinWatts/ESP32_TFT_Combiner
