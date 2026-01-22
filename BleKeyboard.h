@@ -49,10 +49,10 @@ public:
   size_t release(const MediaKeyReport k);
   size_t write(const MediaKeyReport c);
 
-  // Callbacks
-  void onConnect(NimBLEServer* pServer) override;
-  void onDisconnect(NimBLEServer* pServer) override;
-  void onWrite(NimBLECharacteristic* me) override;
+  // Callbacks (NimBLE 2.x signatures)
+  void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) override;
+  void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason) override;
+  void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override;
 
 private:
   void sendReport(KeyReport* keys);
