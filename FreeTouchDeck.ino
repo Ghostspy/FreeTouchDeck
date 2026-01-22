@@ -68,6 +68,7 @@
 // ------- NimBLE definition, use only if the NimBLE library is installed 
 // and if you are using the original ESP32-BLE-Keyboard library by T-VK -------
 #define USE_NIMBLE 1
+#include "BleKeyboard.h"
 
 // Define the filesystem to be used. For now just SPIFFS.
 #define FILESYSTEM SPIFFS
